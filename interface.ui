@@ -60,6 +60,9 @@
     <property name="text">
      <string>AC</string>
     </property>
+    <property name="shortcut">
+     <string>Del</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="btn_invert">
     <property name="geometry">
@@ -378,6 +381,9 @@
     <property name="text">
      <string>=</string>
     </property>
+    <property name="shortcut">
+     <string>Enter</string>
+    </property>
    </widget>
    <widget class="QPushButton" name="btn_virg">
     <property name="geometry">
@@ -394,6 +400,9 @@
      </font>
     </property>
     <property name="text">
+     <string>,</string>
+    </property>
+    <property name="shortcut">
      <string>,</string>
     </property>
    </widget>

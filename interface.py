@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot
+from funcoes import somar
 
 
 class Calculadora(QMainWindow):
@@ -21,7 +22,18 @@ class Calculadora(QMainWindow):
         self.btn_9.clicked.connect(lambda: self.addNumber(9))
         self.btn_0.clicked.connect(lambda: self.addNumber(0))
 
+        self.btn_virg.clicked.connect(self.addComma)
+
         self.btn_limpar.clicked.connect(self.cleanDisplay)
+        self.btn_igual.clicked.connect(self.showResult)
+
+    def addComma(self):
+        ultimo = self.display.text()
+        if ultimo.count(",") > 0:
+            resultado = ultimo
+        else:
+            resultado = ultimo + ","
+        self.display.setText(resultado)
     
     def addNumber(self, numero):
         ultimo = self.display.text()
@@ -33,3 +45,16 @@ class Calculadora(QMainWindow):
     
     def cleanDisplay(self):
         self.display.setText("0")
+    
+    def showResult(self):
+        num1 = self.display.text()
+        if "," in num1:
+            num1 = num1.replace(',', '.')
+            num1 = float(num1)
+        else:
+            num1 = int(num1)
+
+        num2 = 2
+        result = somar(num1, num2)
+        print(f'Numero: {result}')
+        print("tipo:", type(result))
