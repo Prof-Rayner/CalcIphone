@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot
-from funcoes import somar
+
+from funcoes import somar, subtrair, multiplicar, dividir
 
 
 class Calculadora(QMainWindow):
@@ -10,6 +11,17 @@ class Calculadora(QMainWindow):
         super().__init__(**kwargs)
         loadUi("interface.ui", self)
         self.show()
+
+        self.num1 = 0
+        self.num2 = 0
+
+        self.selectedOperation = None
+        self.operationList = {
+            "+": somar,
+            "-": subtrair,
+            "x": multiplicar,
+            "÷": dividir
+        }
 
         self.btn_1.clicked.connect(lambda: self.addNumber(1))
         self.btn_2.clicked.connect(lambda: self.addNumber(2))
@@ -23,15 +35,17 @@ class Calculadora(QMainWindow):
         self.btn_0.clicked.connect(lambda: self.addNumber(0))
         self.btn_virg.clicked.connect(self.addComma)
 
-        self.btn_mais.clicked.connect(self.setOperation)
-        self.btn_menos.clicked.connect(self.setOperation)
-        self.btn_mult.clicked.connect(self.setOperation)
-        self.btn_div.clicked.connect(self.setOperation)
+        self.btn_mais.clicked.connect(lambda: self.setOperation("+"))
+        self.btn_menos.clicked.connect(lambda: self.setOperation("-"))
+        self.btn_mult.clicked.connect(lambda: self.setOperation("x"))
+        self.btn_div.clicked.connect(lambda: self.setOperation("÷"))
 
+        self.btn_invert.clicked.connect(self.invert)
         self.btn_limpar.clicked.connect(self.cleanDisplay)
         self.btn_igual.clicked.connect(self.showResult)
     
     def addNumber(self, numero):
+        self.btn_limpar.setText("<-")
         ultimo = self.display.text()
         if ultimo == '0':
             resultado = str(numero)
@@ -48,12 +62,30 @@ class Calculadora(QMainWindow):
         self.display.setText(resultado)
     
     def cleanDisplay(self):
-        self.display.setText("0")
+        if self.btn_limpar.text() == "AC":
+            self.display.setText("0")
+            self.display2.setText("0")
+            self.num2 = 0
+        else:
+            ultimo = self.display.text()[:-1]
+            if len(ultimo) == 0:
+                ultimo = "0"
+                self.btn_limpar.setText("AC")
+            self.display.setText(ultimo)
 
-    def setOperation(self):
+    def invert(self):
+        numero = int(self.display.text())
+        numero = str(numero * - 1)
+        self.display.setText(numero)
+
+    def setOperation(self, operation):
+        self.selectedOperation = operation
+        self.num1 = self.getNumberDisplay(self.display)
+        self.num2 = 0
         result = self.display.text()
         self.display2.setText(result)
-        self.cleanDisplay()
+        self.display.setText("0")
+        self.btn_limpar.setText("AC")
     
     def getNumberDisplay(self, display):
         num = display.text()
@@ -75,11 +107,17 @@ class Calculadora(QMainWindow):
         result = f'{num1} {operation} {num2} ='
         self.display2.setText(result)
 
-
     def showResult(self):
-        num1 = self.getNumberDisplay(self.display2)
-        num2 = self.getNumberDisplay(self.display)
+        if self.num2 == 0:
+            self.num2 = self.getNumberDisplay(self.display)
 
-        result = somar(num1, num2)
+        num1 = self.num1
+        num2 = self.num2
+
+        operation = self.operationList.get(self.selectedOperation)
+        result = operation(num1, num2)
+        self.num1 = result
+        
         self.setNumberDisplay(result)
-        self.setCalcDisplay(num1, num2, "+")
+        self.setCalcDisplay(num1, num2, self.selectedOperation)
+        self.btn_limpar.setText("AC")
