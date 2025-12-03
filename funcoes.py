@@ -17,4 +17,6 @@ def dividir(num1, num2):
         return "Erro divisao"
     return num1 / num2
 
+def porcentagem(num1, percent):
+    return num1 * (percent/100)
 

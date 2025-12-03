@@ -2,7 +2,11 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import pyqtSlot
 
-from funcoes import somar, subtrair, multiplicar, dividir
+from funcoes import (
+    somar, subtrair,
+    multiplicar, dividir,
+    porcentagem
+    )
 
 
 class Calculadora(QMainWindow):
@@ -40,8 +44,9 @@ class Calculadora(QMainWindow):
         self.btn_mult.clicked.connect(lambda: self.setOperation("x"))
         self.btn_div.clicked.connect(lambda: self.setOperation("÷"))
 
-        self.btn_invert.clicked.connect(self.invert)
         self.btn_limpar.clicked.connect(self.cleanDisplay)
+        self.btn_invert.clicked.connect(self.invert)
+        self.btn_perc.clicked.connect(self.percent)
         self.btn_igual.clicked.connect(self.showResult)
     
     def addNumber(self, numero):
@@ -77,6 +82,12 @@ class Calculadora(QMainWindow):
         numero = int(self.display.text())
         numero = str(numero * - 1)
         self.display.setText(numero)
+
+    def percent(self):
+        perc = self.getNumberDisplay(self.display)
+        result = porcentagem(self.num1, perc)
+        self.setNumberDisplay(result)
+        
 
     def setOperation(self, operation):
         self.selectedOperation = operation

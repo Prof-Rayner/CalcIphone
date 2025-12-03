@@ -82,7 +82,7 @@
      <string>+ / -</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_porc">
+   <widget class="QPushButton" name="btn_perc">
     <property name="geometry">
      <rect>
       <x>170</x>
