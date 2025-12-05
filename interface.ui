@@ -13,6 +13,18 @@
     <height>593</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>335</width>
+    <height>593</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>335</width>
+    <height>593</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Calculadora Iphone</string>
   </property>

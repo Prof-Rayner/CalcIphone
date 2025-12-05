@@ -7,13 +7,18 @@ from funcoes import (
     multiplicar, dividir,
     porcentagem
     )
+from os import path
+import sys
 
+def loadFile(file):
+    base_path = getattr(sys, "_MEIPASS", path.dirname(path.abspath(__file__)))
+    return path.join(base_path, file)
 
 class Calculadora(QMainWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        loadUi("interface.ui", self)
+        loadUi(loadFile("interface.ui"), self)
         self.show()
 
         self.num1 = 0
@@ -72,8 +77,9 @@ class Calculadora(QMainWindow):
         self.btn_igual.setEnabled(True)
         self.display.setText("0")
         self.display2.setText("0")
+        self.num1 = 0
+        self.num2 = 0
         self.selectedOperation = None
-
 
 
     def addNumber(self, numero):
