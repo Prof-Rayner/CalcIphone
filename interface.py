@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QTimer
 
 from funcoes import (
     somar, subtrair,
@@ -50,6 +50,32 @@ class Calculadora(QMainWindow):
         self.btn_perc.clicked.connect(self.percent)
         self.btn_igual.clicked.connect(self.showResult)
     
+    def timerClean(self):
+        self.btn_mais.setEnabled(False)
+        self.btn_menos.setEnabled(False)
+        self.btn_mult.setEnabled(False)
+        self.btn_div.setEnabled(False)
+        self.btn_invert.setEnabled(False)
+        self.btn_perc.setEnabled(False)
+        self.btn_igual.setEnabled(False)
+
+        self.cronometro = QTimer(self)
+        self.cronometro.singleShot(1000, self.timeOutClean)
+    
+    def timeOutClean(self):
+        self.btn_mais.setEnabled(True)
+        self.btn_menos.setEnabled(True)
+        self.btn_mult.setEnabled(True)
+        self.btn_div.setEnabled(True)
+        self.btn_invert.setEnabled(True)
+        self.btn_perc.setEnabled(True)
+        self.btn_igual.setEnabled(True)
+        self.display.setText("0")
+        self.display2.setText("0")
+        self.selectedOperation = None
+
+
+
     def addNumber(self, numero):
         self.btn_limpar.setText("<-")
         ultimo = self.display.text()
@@ -136,3 +162,5 @@ class Calculadora(QMainWindow):
             self.setCalcDisplay(num1, num2, self.selectedOperation)
             self.btn_limpar.setText("AC")
             self.finish = True
+            if isinstance(result, str):
+                self.timerClean()

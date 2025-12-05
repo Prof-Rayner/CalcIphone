@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,10 @@
   </property>
   <property name="windowTitle">
    <string>Calculadora Iphone</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icone.png</normaloff>icone.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralwidget{
@@ -40,6 +47,10 @@
 #btn_limpar, #btn_invert, #btn_porc{
 	color: black;
 	background-color: lightgray;
+}
+
+#btn_igual:disabled, #btn_mais:disabled, #btn_menos:disabled, #btn_mult:disabled, #btn_div:disabled {
+	background-color: #e8b87d;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -101,6 +112,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="btn_div">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>250</x>
