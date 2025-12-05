@@ -18,6 +18,7 @@ class Calculadora(QMainWindow):
 
         self.num1 = 0
         self.num2 = 0
+        self.finish = False
 
         self.selectedOperation = None
         self.operationList = {
@@ -52,7 +53,8 @@ class Calculadora(QMainWindow):
     def addNumber(self, numero):
         self.btn_limpar.setText("<-")
         ultimo = self.display.text()
-        if ultimo == '0':
+        if ultimo == '0' or self.finish :
+            self.finish = False
             resultado = str(numero)
         else:
             resultado = ultimo + str(numero)
@@ -70,6 +72,7 @@ class Calculadora(QMainWindow):
         if self.btn_limpar.text() == "AC":
             self.display.setText("0")
             self.display2.setText("0")
+            self.num1 = 0
             self.num2 = 0
         else:
             ultimo = self.display.text()[:-1]
@@ -79,15 +82,14 @@ class Calculadora(QMainWindow):
             self.display.setText(ultimo)
 
     def invert(self):
-        numero = int(self.display.text())
+        numero = self.getNumberDisplay(self.display)
         numero = str(numero * - 1)
-        self.display.setText(numero)
+        self.setNumberDisplay(numero)
 
     def percent(self):
         perc = self.getNumberDisplay(self.display)
         result = porcentagem(self.num1, perc)
         self.setNumberDisplay(result)
-        
 
     def setOperation(self, operation):
         self.selectedOperation = operation
@@ -119,16 +121,18 @@ class Calculadora(QMainWindow):
         self.display2.setText(result)
 
     def showResult(self):
-        if self.num2 == 0:
-            self.num2 = self.getNumberDisplay(self.display)
+        if self.selectedOperation:
+            if self.num2 == 0:
+                self.num2 = self.getNumberDisplay(self.display)
 
-        num1 = self.num1
-        num2 = self.num2
+            num1 = self.num1
+            num2 = self.num2
 
-        operation = self.operationList.get(self.selectedOperation)
-        result = operation(num1, num2)
-        self.num1 = result
-        
-        self.setNumberDisplay(result)
-        self.setCalcDisplay(num1, num2, self.selectedOperation)
-        self.btn_limpar.setText("AC")
+            operation = self.operationList.get(self.selectedOperation)
+            result = operation(num1, num2)
+            self.num1 = result
+            
+            self.setNumberDisplay(result)
+            self.setCalcDisplay(num1, num2, self.selectedOperation)
+            self.btn_limpar.setText("AC")
+            self.finish = True

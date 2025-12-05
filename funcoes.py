@@ -18,5 +18,9 @@ def dividir(num1, num2):
     return num1 / num2
 
 def porcentagem(num1, percent):
+    if num1 == 0:
+        return percent/100
     return num1 * (percent/100)
 
+def porcentagem1(percent):
+    return percent/100
